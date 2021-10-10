@@ -123,7 +123,7 @@ function LinkList() {
   };
   //  8.isEmpty 判断链表是否为空
   LinkList.prototype.isEmpty = function () {
-    if (this.length !== 0) return false;
+    return this.length == 0;
   };
   //  9.size 返回链表的元素个数
   LinkList.prototype.size = function () {
