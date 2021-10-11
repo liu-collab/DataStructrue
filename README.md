@@ -37,7 +37,7 @@
 
 ### 单向链表
 
-#### 链表的组成
+#### 单向链表的组成
 
 - 链表的组成类似于火车的组成,火车头拉着车厢,车厢与车厢相连
 - 链表由表头 heade 开始,指向第一节车厢
@@ -49,9 +49,32 @@
 - insert(element,position) 特定位置插入元素
 - remove(element) 删除元素
 - removeAt(position) 删除特定位置的元素
-- update(position) 修改特定位置的元素
+- update(position,element) 修改特定位置的元素
 - get(position) 查找特定位置的元素
 - indexOf(element) 返回元素在链表中的索引,没有返回-1
 - isEmpty 判断链表是否为空
 - size 返回链表的元素个数
 - toString 将链表的内容以字符串返回
+
+### 双向链表
+
+#### 双向链表的组成
+
+- 双向链表在节点的组成时比单向链表多了 previous,previous 指向的前一个节点
+- 双向链表由于节点可以指向前一个节点,也可以指向后一个节点,
+- 在修改数据量大的链表时,特别是在链表后面的数据,用双向链表查找非常快
+
+#### 双向链表的操作
+
+- append(element) 向链尾添加新的元素
+- insert(element,position) 特定位置插入元素
+- remove(element) 删除元素
+- removeAt(position) 删除特定位置的元素
+- update(position,element) 修改特定位置的元素
+- get(position) 查找特定位置的元素
+- indexOf(element) 返回元素在链表中的索引,没有返回-1
+- isEmpty 判断链表是否为空
+- size 返回链表的元素个数
+- toString 将链表的内容以字符串返回
+- forwardString 返回正向遍历的节点字符串形式
+- backwordString 返回返现遍历的节点字符串形式
