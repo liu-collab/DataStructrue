@@ -64,9 +64,11 @@ function HashTable() {
     });
 
     const num = indey / this.limt;
-
+    console.log(num);
     if (num > 0.75) {
-      this.resize(this.limt * 2);
+      const newsize = this.limt * 2;
+      const prime = this.getPrime(newsize);
+      this.resize(prime);
     }
   };
 
@@ -86,6 +88,7 @@ function HashTable() {
       return null;
     }
   };
+  //删除操作
   HashTable.prototype.remove = function (key) {
     //1.获取对应的下标值
     const index = this.hashFun(key, this.limt);
@@ -102,6 +105,21 @@ function HashTable() {
         return tuple[1];
       }
       return null;
+    }
+    let indey = 0;
+    this.storage.map((item) => {
+      if ([item]) {
+        indey++;
+      }
+      return indey;
+    });
+
+    const num = indey / this.limt;
+
+    if (this.limt > 7 && num < 0.25) {
+      const newsize = Math.floor(this.limt / 2);
+      const prime = this.getPrime(newsize);
+      this.resize(prime);
     }
   };
   HashTable.prototype.size = function () {
@@ -133,6 +151,24 @@ function HashTable() {
         this.put(tuple[0], tuple[1]);
       }
     }
+  };
+  //判断是否为质数
+  HashTable.prototype.isPrime = function (num) {
+    const temp = parseInt(Math.sqrt(num));
+    console.log(temp);
+    for (let i = 2; i <= temp; i++) {
+      if (num % i == 0) {
+        return false;
+      }
+      return true;
+    }
+  };
+  //获取质数
+  HashTable.prototype.getPrime = function (num) {
+    while (!this.isPrime(num)) {
+      num++;
+    }
+    return num;
   };
 }
 
