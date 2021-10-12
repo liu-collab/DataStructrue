@@ -51,6 +51,23 @@ function HashTable() {
     //不存在直接添加
     bucket.push([key, value]);
     this.count++;
+    console.log(this.storage);
+
+    //判断是否需要扩容当容量大于0.75进行扩容
+    //只有在bucket在大于0.75时才能扩容
+    let indey = 0;
+    this.storage.map((item) => {
+      if ([item]) {
+        indey++;
+      }
+      return indey;
+    });
+
+    const num = indey / this.limt;
+
+    if (num > 0.75) {
+      this.resize(this.limt * 2);
+    }
   };
 
   //查找方法
@@ -93,6 +110,30 @@ function HashTable() {
   HashTable.prototype.isEmpty = function () {
     return this.count == 0;
   };
+
+  //哈希表扩容
+  HashTable.prototype.resize = function (newlimit) {
+    //将原来的storage存起来
+    const oldStorage = this.storage;
+    //清空 重置
+    this.storage = [];
+    this.count = 0;
+    this.limt = newlimit;
+    //遍历旧的storage
+    for (let i = 0; i < oldStorage.length; i++) {
+      //取出每一个的bucket
+      const bucket = oldStorage[i];
+      if (bucket == null) {
+        continue;
+      }
+      //遍历bucket
+      for (let j = 0; j < bucket.length; j++) {
+        let tuple = bucket[j];
+        //重新添加旧的元素
+        this.put(tuple[0], tuple[1]);
+      }
+    }
+  };
 }
 
 const hashtable = new HashTable();
@@ -102,10 +143,11 @@ hashtable.put('safd', '54656');
 hashtable.put('dfd', '5371');
 hashtable.put('dvf', '5571');
 hashtable.put('dfdb', '531');
-
+hashtable.put('hj', '545');
+hashtable.put('kjdvs', '654');
 //console.log(hashtable);
-console.log(hashtable.get('dfd'));
-console.log(hashtable.size());
-console.log(hashtable.remove('dfd'));
-console.log(hashtable.get('dfd'));
-console.log(hashtable.size());
+// console.log(hashtable.get('dfd'));
+// console.log(hashtable.size());
+// console.log(hashtable.remove('dfd'));
+// console.log(hashtable.get('dfd'));
+// console.log(hashtable.size());
