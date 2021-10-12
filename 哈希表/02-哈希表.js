@@ -51,7 +51,7 @@ function HashTable() {
     //不存在直接添加
     bucket.push([key, value]);
     this.count++;
-    console.log(this.storage);
+    // console.log(this.storage);
 
     //判断是否需要扩容当容量大于0.75进行扩容
     //只有在bucket在大于0.75时才能扩容
@@ -64,10 +64,12 @@ function HashTable() {
     });
 
     const num = indey / this.limt;
-    console.log(num);
+
     if (num > 0.75) {
       const newsize = this.limt * 2;
+
       const prime = this.getPrime(newsize);
+
       this.resize(prime);
     }
   };
@@ -155,7 +157,7 @@ function HashTable() {
   //判断是否为质数
   HashTable.prototype.isPrime = function (num) {
     const temp = parseInt(Math.sqrt(num));
-    console.log(temp);
+
     for (let i = 2; i <= temp; i++) {
       if (num % i == 0) {
         return false;
