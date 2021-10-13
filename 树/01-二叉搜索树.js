@@ -138,6 +138,84 @@ function BinarySearchTree() {
     return node.key;
   };
   // 8- remove(key):删除 key
+
+  BinarySearchTree.prototype.remove = function (key) {
+    //1.找到要删除的节点
+    let current = this.root;
+    let parant = null;
+    let isLeftchild = true;
+    while (node != null) {
+      //节点往下找父节点为当前节点
+      parant = current;
+      if (key < current.key) {
+        current = current.left;
+      } else {
+        current = current.right;
+        isLeftchild = false;
+      }
+    }
+    //没有找到
+    if (current == null) return false;
+    //2.删除找到的节点
+    //2.1.删除叶子节点
+    if (current.left == null && current.right == null) {
+      if (current == this.root) {
+        this.root = null;
+      } else if (isLeftchild) {
+        parant.left = null;
+      } else {
+        parant.right = null;
+      }
+    }
+    //2.2.删除只有一个叶子节点的节点
+    else if (current.left != null && current.right == null) {
+      if (current == this.root) {
+        this.root = current.left;
+      } else if (isLeftchild) {
+        parant.left = current.left;
+      } else {
+        parant.right = current.left;
+      }
+    } else if (current.left == null && current.right != null) {
+      if (current == this.root) {
+        this.root = current.right;
+      } else if (isLeftchild) {
+        parant.left = current.right;
+      } else {
+        parant.right = current.right;
+      }
+    }
+    //2.3.删除两个叶子节点的节点
+    else {
+      //获取后继节点
+      let succssor = this.getSuccssor(current);
+      //判断是否为根节点
+      if (current == this.root) {
+        succssor = this.root;
+      } else if (isLeftchild) {
+        parant.left = succssor;
+      } else {
+        parant.right = succssor;
+      }
+
+      //删除之后的后继重新指向刚才的左子树
+      succssor.left = current.left;
+    }
+  };
+
+  //找到后继
+  BinarySearchTree.prototype.getSuccssor = function (delnode) {
+    //保存要删除的节点
+    let succssor = delnode;
+    //后继找右边接近(大一点点)需要删除的key值
+    let current = delnode.right;
+    while (current != null) {
+      succssor = current;
+      //一直往右子树的左边找
+      current = current.left;
+    }
+    return succssor;
+  };
 }
 
 //test
