@@ -274,4 +274,4 @@ bst.remove(9);
 bst.remove(20);
 resString = '';
 bst.preOrderTraversal(handle);
-console.log(`先序序遍历:${resString}`);
+console.log(`删除节点后先序序遍历:${resString}`);
