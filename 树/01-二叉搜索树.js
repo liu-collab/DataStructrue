@@ -196,7 +196,7 @@ function BinarySearchTree() {
       if (current == this.root) {
         succssor = this.root;
       } else if (isLeftchild) {
-        //判断删除的节点是在左节点还是右节点
+        //判断删除的节点是在父节点的左节点还是右节点
         parant.left = succssor;
       } else {
         parant.right = succssor;
