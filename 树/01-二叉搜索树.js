@@ -144,16 +144,18 @@ function BinarySearchTree() {
     let current = this.root;
     let parant = null;
     let isLeftchild = true;
-    while (node != null) {
+    while (current.key != key) {
       //节点往下找父节点为当前节点
       parant = current;
       if (key < current.key) {
         current = current.left;
+        isLeftchild = true;
       } else {
         current = current.right;
         isLeftchild = false;
       }
     }
+
     //没有找到
     if (current == null) return false;
     //2.删除找到的节点
@@ -176,7 +178,7 @@ function BinarySearchTree() {
       } else {
         parant.right = current.left;
       }
-    } else if (current.left == null && current.right != null) {
+    } else if (current.right != null && current.left == null) {
       if (current == this.root) {
         this.root = current.right;
       } else if (isLeftchild) {
@@ -189,10 +191,12 @@ function BinarySearchTree() {
     else {
       //获取后继节点
       let succssor = this.getSuccssor(current);
+
       //判断是否为根节点
       if (current == this.root) {
         succssor = this.root;
       } else if (isLeftchild) {
+        //判断删除的节点是在左节点还是右节点
         parant.left = succssor;
       } else {
         parant.right = succssor;
@@ -209,10 +213,20 @@ function BinarySearchTree() {
     let succssor = delnode;
     //后继找右边接近(大一点点)需要删除的key值
     let current = delnode.right;
+    //保存父节点
+    let succssorParent = succssor;
     while (current != null) {
+      //父节点保存上一次的找的的节点
+      succssorParent = succssor;
+
       succssor = current;
       //一直往右子树的左边找
       current = current.left;
+    }
+    //判断找的节点是否直接就是删除节点的right节点
+    if (succssor != delnode.right) {
+      succssorParent.left = succssor.right;
+      succssor.right = delnode.right;
     }
     return succssor;
   };
@@ -255,3 +269,9 @@ console.log(bst.min());
 console.log(bst.max());
 console.log(bst.search(25));
 console.log(bst.search(95));
+//删除
+bst.remove(9);
+bst.remove(20);
+resString = '';
+bst.preOrderTraversal(handle);
+console.log(`先序序遍历:${resString}`);
