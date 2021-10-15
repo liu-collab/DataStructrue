@@ -42,15 +42,16 @@ function Dictionary() {
   };
 }
 
-///测试
-const set = new Dictionary();
-set.set('name', 'Jack');
-set.set('ds', 'ds');
-set.set('fgn', 'hng');
-set.set('dr', 'ubfd');
-set.set('ewt', 'hn');
-console.log(set.value());
-console.log(set.key());
-console.log(set.size());
-console.log(set.has('name'));
-console.log(set.get('name'));
+//module.export = Dictionary;
+// ///测试
+// const set = new Dictionary();
+// set.set('name', 'Jack');
+// set.set('ds', 'ds');
+// set.set('fgn', 'hng');
+// set.set('dr', 'ubfd');
+// set.set('ewt', 'hn');
+// console.log(set.value());
+// console.log(set.key());
+// console.log(set.size());
+// console.log(set.has('name'));
+// console.log(set.get('name'));
