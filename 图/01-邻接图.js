@@ -18,6 +18,37 @@ function Graph() {
     this.edges.get(v1).push(v2);
     this.edges.get(v2).push(v1);
   };
+  Graph.prototype.toString = function () {
+    //1.保存字符串
+    let resString = '';
+    //2.先取出顶点,在取出边
+    for (let i of this.vertexts) {
+      resString += i + '->';
+      //取出对应顶点相连的边
+      let E = this.edges.get(i);
+      for (let j of E) {
+        resString += j + ' ';
+      }
+      //换行
+      resString += '\n';
+    }
+    return resString;
+  };
+
+  //广度优先
+  //white:表示未被访问
+  //gray:表示访问过了,但是没有探索完(还有其他相连的顶点没有访问)
+  //black:表示探索完
+
+  //初始化状态
+  //顶点表示为['A':'white']
+  Graph.prototype.initiallizeColor = function () {
+    var colors = [];
+    for (let i of this.vertexts) {
+      colors[i] = 'white';
+    }
+    return colors;
+  };
 }
 
 //测试
@@ -41,3 +72,5 @@ graph.addEdge('D', 'H');
 graph.addEdge('B', 'E');
 graph.addEdge('B', 'F');
 graph.addEdge('E', 'I');
+
+console.log(graph.toString());
