@@ -51,6 +51,8 @@ function Graph() {
   };
 
   //广度优先搜索BFS
+  //先探测第一个顶点,将和这个相连的顶点放入到队尾,继续探测队列中第二个顶点,
+  //又将相连的顶点放入到队尾,循环直到所有都探测完成
   //顶点,处理顶点
   Graph.prototype.bfs = function (initV, handle) {
     //1.初始化颜色
