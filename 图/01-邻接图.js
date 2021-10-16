@@ -49,6 +49,40 @@ function Graph() {
     }
     return colors;
   };
+
+  //广度优先搜索BFS
+  //顶点,处理顶点
+  Graph.prototype.bfs = function (initV, handle) {
+    //1.初始化颜色
+    const colors = this.initiallizeColor();
+    //2.初始化队列
+    const queue = new Queue();
+    //3.将顶点放入到队列中
+    queue.enqueue(initV);
+    //4.重循环队列中取出顶点
+    while (!queue.isEmpty()) {
+      //4.1重队列中取出第一个顶点
+      var v = queue.dequeue();
+      //4.2获取顶点相邻的点
+      var vList = this.edges.get(v);
+      //4.3访问完成,改变颜色,
+      colors[v] = 'gray';
+      //4.4遍历所有的节点,将节点加入到队列中
+      for (let item of vList) {
+        //判断节点是否被访问过了
+        if (colors[item] == 'white') {
+          //没有访问,改变颜色
+          colors[item] = 'gray';
+          //加入到队列中
+          queue.enqueue(item);
+        }
+      }
+      //5.访问节点,处理节点
+      handle(v);
+      //6.探测完成,改变节点颜色
+      colors[v] == 'black';
+    }
+  };
 }
 
 //测试
@@ -74,3 +108,8 @@ graph.addEdge('B', 'F');
 graph.addEdge('E', 'I');
 
 console.log(graph.toString());
+let resString = '';
+graph.bfs(graph.vertexts[0], function (v) {
+  resString += v + ' ';
+});
+console.log(resString);
