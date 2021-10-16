@@ -85,6 +85,30 @@ function Graph() {
       colors[v] == 'black';
     }
   };
+
+  //深度优先搜索DFS
+  Graph.prototype.dfs = function (initV, handle) {
+    //1.初始化颜色
+    const colors = this.initiallizeColor();
+    //2.递归调用处理
+    this.dfsVisit(initV, colors, handle);
+  };
+  Graph.prototype.dfsVisit = function (v, colors, handle) {
+    //1.处理顶点
+    handle(v);
+    //2.访问完成改变颜色
+    colors[v] = 'gray';
+    //3.探测相邻顶点
+    const vList = this.edges.get(v);
+    for (let item of vList) {
+      if (colors[item] == 'white') {
+        colors[item] = 'gray';
+        this.dfsVisit(item, colors, handle);
+      }
+    }
+    //4.探测完成,改变颜色
+    colors[v] = 'black';
+  };
 }
 
 //测试
@@ -110,8 +134,16 @@ graph.addEdge('B', 'F');
 graph.addEdge('E', 'I');
 
 console.log(graph.toString());
+//深度优先
 let resString = '';
 graph.bfs(graph.vertexts[0], function (v) {
+  resString += v + ' ';
+});
+console.log(resString);
+
+//广度优先
+resString = '';
+graph.dfs(graph.vertexts[0], function (v) {
   resString += v + ' ';
 });
 console.log(resString);
