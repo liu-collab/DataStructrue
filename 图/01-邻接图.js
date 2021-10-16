@@ -59,9 +59,9 @@ function Graph() {
     const queue = new Queue();
     //3.将顶点放入到队列中
     queue.enqueue(initV);
-    //4.重循环队列中取出顶点
+    //4.从循环队列中取出顶点
     while (!queue.isEmpty()) {
-      //4.1重队列中取出第一个顶点
+      //4.1从队列中取出第一个顶点
       var v = queue.dequeue();
       //4.2获取顶点相邻的点
       var vList = this.edges.get(v);
