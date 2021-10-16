@@ -87,6 +87,7 @@ function Graph() {
   };
 
   //深度优先搜索DFS
+  //从一条边出发,将所有顶点走完后再回来探测其他顶点
   Graph.prototype.dfs = function (initV, handle) {
     //1.初始化颜色
     const colors = this.initiallizeColor();
@@ -101,8 +102,11 @@ function Graph() {
     //3.探测相邻顶点
     const vList = this.edges.get(v);
     for (let item of vList) {
+      //颜色为white表示未访问
       if (colors[item] == 'white') {
         colors[item] = 'gray';
+        //继续探测测相邻节点的节点
+        //一直到最后节点
         this.dfsVisit(item, colors, handle);
       }
     }
