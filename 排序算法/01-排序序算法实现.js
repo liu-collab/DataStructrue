@@ -37,7 +37,21 @@ function ArryList() {
     }
   };
   //选择排序
+  ArryList.prototype.selectionSort = function () {
+    const length = this.items.length;
 
+    for (let j = 0; j < length - 1; j++) {
+      let min = j;
+      //找出最小值
+      for (let i = min + 1; i < length; i++) {
+        if (this.items[min] > this.items[i]) {
+          min = i;
+        }
+      }
+      //找出最小值之后交换数据
+      this.swap(min, j);
+    }
+  };
   //插入排序
 
   //希尔排序
@@ -55,6 +69,8 @@ list.insert(42);
 list.insert(12);
 list.insert(43);
 list.insert(13);
-console.log(list.toString());
-list.bubbleSort();
-console.log(list);
+console.log(`原始数据:${list.toString()}`);
+// list.bubbleSort();
+// console.log(`冒泡排序:${list.toString()}`);
+list.selectionSort();
+console.log(`选择排序:${list.toString()}`);
