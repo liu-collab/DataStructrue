@@ -70,7 +70,30 @@ function ArryList() {
     }
   };
   //希尔排序
-
+  ArryList.prototype.shellSort = function () {
+    const length = this.items.length;
+    //初始化间隔gap
+    let gap = Math.floor(length / 2);
+    //在间隔小于1退出循环
+    while (gap >= 1) {
+      //从间隔开始依次遍历
+      for (let i = gap; i < length; i++) {
+        //取出当前的间隔的数据
+        let temp = this.items[i];
+        var j = i;
+        //循环判断当前的数据是否大于间隔前一个数据
+        //并且当前的序号不能大于
+        while (this.items[j - gap] > temp && j > gap - 1) {
+          //大于的话,将当前数据赋值为间隔前一个数据
+          this.items[j] = this.items[j - gap];
+          //
+          j -= gap;
+        }
+        this.items[j] = temp;
+      }
+      gap = Math.floor(gap / 2);
+    }
+  };
   //快速排序
 }
 
@@ -89,5 +112,7 @@ console.log(`原始数据:${list.toString()}`);
 // console.log(`冒泡排序:${list.toString()}`);
 // list.selectionSort();
 // console.log(`选择排序:${list.toString()}`);
-list.insertionSort();
-console.log(`插入排序${list.toString()}`);
+// list.insertionSort();
+// console.log(`插入排序${list.toString()}`);
+list.shellSort();
+console.log(`希尔排序:${list.toString()}`);
