@@ -53,7 +53,22 @@ function ArryList() {
     }
   };
   //插入排序
+  ArryList.prototype.insertionSort = function () {
+    const length = this.items.length;
 
+    for (let i = 0; i < length; i++) {
+      //取出当前数据
+      let temp = this.items[i];
+      let j = i;
+      //循环往后找出当前数据最小的位置进行交换
+      while (this.items[j - 1] > temp && j > 0) {
+        this.items[j] = this.items[j - 1];
+        j--;
+      }
+      //交换数据
+      this.items[j] = temp;
+    }
+  };
   //希尔排序
 
   //快速排序
@@ -72,5 +87,7 @@ list.insert(13);
 console.log(`原始数据:${list.toString()}`);
 // list.bubbleSort();
 // console.log(`冒泡排序:${list.toString()}`);
-list.selectionSort();
-console.log(`选择排序:${list.toString()}`);
+// list.selectionSort();
+// console.log(`选择排序:${list.toString()}`);
+list.insertionSort();
+console.log(`插入排序${list.toString()}`);
