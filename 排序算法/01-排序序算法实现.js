@@ -59,13 +59,15 @@ function ArryList() {
     for (let i = 0; i < length; i++) {
       //取出当前数据
       let temp = this.items[i];
+      //j记录的是当前位置
       let j = i;
-      //循环往后找出当前数据最小的位置进行交换
+      //循环往后找出比当前数据小的位置进行交换
       while (this.items[j - 1] > temp && j > 0) {
         this.items[j] = this.items[j - 1];
+        //j递减,一直往后找
         j--;
       }
-      //交换数据
+      //当找到最小数据的位置,将当前数据赋值给最小位置
       this.items[j] = temp;
     }
   };
@@ -81,16 +83,18 @@ function ArryList() {
         //取出当前的间隔的数据
         let temp = this.items[i];
         var j = i;
-        //循环判断当前的数据是否大于间隔前一个数据
-        //并且当前的序号不能大于
+        //循环判断当前的数据是否大于间隔前一个数据(往间隔的后面找,将小的数据往后面放)
+        //并且当前的序号不能大于当前间隔的前一个
         while (this.items[j - gap] > temp && j > gap - 1) {
           //大于的话,将当前数据赋值为间隔前一个数据
           this.items[j] = this.items[j - gap];
-          //
+          //每次递减一个间隔
           j -= gap;
         }
+        //将找的最小位置赋值当前数据
         this.items[j] = temp;
       }
+      //间隔取每次间隔的一半
       gap = Math.floor(gap / 2);
     }
   };
@@ -114,5 +118,6 @@ console.log(`原始数据:${list.toString()}`);
 // console.log(`选择排序:${list.toString()}`);
 // list.insertionSort();
 // console.log(`插入排序${list.toString()}`);
+
 list.shellSort();
 console.log(`希尔排序:${list.toString()}`);
