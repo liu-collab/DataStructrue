@@ -141,16 +141,22 @@ function ArryList() {
     const pivot = this.median(left, right);
     // console.log(pivot);
     //3.定义变量
-    //
+    //定义左右指针
     let i = left;
+    //右指针从倒数第二个位置比较
     let j = right - 1;
     //4.未知退出循环,先进行死循环,在内部退出循环
     while (true) {
+      //判断左边指针的数据是否小于枢纽,大于退出
       while (this.items[++i] < pivot) {}
+      //判断从右边的的指针是否大于枢纽,小于退出
       while (this.items[--j > pivot]) {}
+      //当左边和右边都退出了循环,说明左边的数据是大于右边的数据
+      //这里i<j保证i是指向左边的数据,就j指向从右边开始的数据
       if (i < j) {
         this.swap(i, j);
       } else {
+        //在左边的序列大于等于右边的序列下退出循环
         break;
       }
     }
