@@ -99,6 +99,65 @@ function ArryList() {
     }
   };
   //快速排序
+  //1.先找出枢纽，一般取前中后三个数据的中位数
+  ArryList.prototype.median = function (left, right) {
+    const center = Math.floor((left + right) / 2);
+    console.log(left, right, center);
+    // console.log(this.items[left], this.items[center], this.items[right]);
+    //左边大换到中间
+    if (this.items[left] > this.items[center]) {
+      this.swap(left, center);
+    }
+    //  console.log(this.items[left], this.items[center], this.items[right]);
+    //中间大于右边调换位置
+    if (this.items[center] > this.items[right]) {
+      this.swap(center, right);
+    }
+    // console.log(this.items[left], this.items[center], this.items[right]);
+    //左边大于右边调换位置
+    if (this.items[left] > this.items[right]) {
+      this.swap(left, right);
+    }
+    //左边大换到中间
+    if (this.items[left] > this.items[center]) {
+      this.swap(left, center);
+    }
+    //  console.log(this.items[left], this.items[center], this.items[right]);
+    //将中的数据换到倒数第二个位置
+    this.swap(center, right - 1);
+    // console.log(this.items[center]);
+    // console.log(this.items[right - 2]);
+    return this.items[right - 1];
+  };
+
+  ArryList.prototype.quickSort = function () {
+    this.quick(0, this.items.length - 1);
+  };
+  ArryList.prototype.quick = function (left, right) {
+    //1.结束条件
+    if (left >= right) return false;
+    //2.找出枢纽
+    const pivot = this.median(left, right);
+    console.log(pivot);
+    //3.定义变量
+    let i = left;
+    let j = right - 1;
+    //4.未知退出循环,先进行死循环,在内部退出循环
+    while (true) {
+      while (this.items[++i] < pivot) {}
+      while (this.items[--j > pivot]) {}
+      if (i < j) {
+        this.swap(i, j);
+      } else {
+        break;
+      }
+    }
+    //5.
+    this.swap(i, right - 1);
+    //6.
+    this.quick(left, i - 1);
+    this.quick(i + 1, right);
+  };
 }
 
 //测试数据
@@ -119,5 +178,7 @@ console.log(`原始数据:${list.toString()}`);
 // list.insertionSort();
 // console.log(`插入排序${list.toString()}`);
 
-list.shellSort();
-console.log(`希尔排序:${list.toString()}`);
+// list.shellSort();
+// console.log(`希尔排序:${list.toString()}`);
+list.quickSort();
+console.log(`快速排序:${list.toString()}`);
