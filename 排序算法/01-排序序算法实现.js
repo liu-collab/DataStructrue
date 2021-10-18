@@ -152,7 +152,7 @@ function ArryList() {
       //判断从右边的的指针是否大于枢纽,小于退出
       while (this.items[--j > pivot]) {}
       //当左边和右边都退出了循环,说明左边的数据是大于右边的数据
-      //这里i<j保证i是指向左边的数据,就j指向从右边开始的数据
+      //这里i<j保证i是指向左边的数据,j指向从右边开始的数据
       if (i < j) {
         this.swap(i, j);
       } else {
@@ -160,9 +160,9 @@ function ArryList() {
         break;
       }
     }
-    //5.
+    //5.在退出循环之后当前i的指向的数据是大于枢纽的,所以需要将枢纽和当前i指向的位置进行变换
     this.swap(i, right - 1);
-    //6.
+    //6.继续递归调用枢纽左边和右边的数据,进行判断
     this.quick(left, i - 1);
     this.quick(i + 1, right);
   };
