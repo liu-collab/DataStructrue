@@ -100,9 +100,10 @@ function ArryList() {
   };
   //快速排序
   //1.先找出枢纽，一般取前中后三个数据的中位数
+  //三个数据进行交换位置,从左到右进行比较,最坏需要三次比较
   ArryList.prototype.median = function (left, right) {
     const center = Math.floor((left + right) / 2);
-    console.log(left, right, center);
+    //console.log(left, right, center);
     // console.log(this.items[left], this.items[center], this.items[right]);
     //左边大换到中间
     if (this.items[left] > this.items[center]) {
@@ -115,9 +116,9 @@ function ArryList() {
     }
     // console.log(this.items[left], this.items[center], this.items[right]);
     //左边大于右边调换位置
-    if (this.items[left] > this.items[right]) {
-      this.swap(left, right);
-    }
+    // if (this.items[left] > this.items[right]) {
+    //   this.swap(left, right);
+    // }
     //左边大换到中间
     if (this.items[left] > this.items[center]) {
       this.swap(left, center);
@@ -138,8 +139,9 @@ function ArryList() {
     if (left >= right) return false;
     //2.找出枢纽
     const pivot = this.median(left, right);
-    console.log(pivot);
+    // console.log(pivot);
     //3.定义变量
+    //
     let i = left;
     let j = right - 1;
     //4.未知退出循环,先进行死循环,在内部退出循环
