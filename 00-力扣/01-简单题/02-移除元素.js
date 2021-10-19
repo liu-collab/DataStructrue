@@ -4,10 +4,12 @@ var removeElement = function (nums, val) {
   const len = nums.length;
   while (p1 < len) {
     if (nums[p1] !== val) {
-      // 过滤掉不需要的元素
+      //在不等于需要删除的元素情况下下进行赋值
+
       nums[p2] = nums[p1];
       p2++;
     }
+    //在等于需要删除的元素跳过
     p1++;
   }
   return p2;
