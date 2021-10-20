@@ -171,13 +171,21 @@ function ArryList() {
 //测试数据
 const list = new ArryList();
 
-list.insert(88);
-list.insert(66);
-list.insert(35);
-list.insert(42);
+// list.insert(88);
+// list.insert(66);
+// list.insert(35);
+// list.insert(42);
+// list.insert(12);
+// list.insert(43);
+// list.insert(13);
+list.insert(60);
+list.insert(21);
+list.insert(123);
 list.insert(12);
-list.insert(43);
-list.insert(13);
+list.insert(56);
+list.insert(85);
+list.insert(879);
+list.insert(546);
 console.log(`原始数据:${list.toString()}`);
 // list.bubbleSort();
 // console.log(`冒泡排序:${list.toString()}`);
