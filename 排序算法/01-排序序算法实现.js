@@ -150,7 +150,7 @@ function ArryList() {
       //判断左边指针的数据是否小于枢纽,大于退出
       while (this.items[++i] < pivot) {}
       //判断从右边的的指针是否大于枢纽,小于退出
-      while (this.items[--j > pivot]) {}
+      while (this.items[--j] > pivot) {}
       //当左边和右边都退出了循环,说明左边的数据是大于右边的数据
       //这里i<j保证i是指向左边的数据,j指向从右边开始的数据
       if (i < j) {
