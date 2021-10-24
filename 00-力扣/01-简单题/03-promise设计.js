@@ -181,6 +181,59 @@ class Mypormise {
       });
     });
   }
+  //将所有的结果进行输出
+  static allSettled(promises) {
+    const results = [];
+    return new Mypormise((resolve) => {
+      promises.forEach((promise) => {
+        if (promise instanceof Mypormise) {
+          promise
+            .then((res) => {
+              results.push({ status: 'resoled', value: res });
+              //判断结果的长度是否等于传进来数组的长度
+              //不管是成功和失败都要输出
+              if (results.length === promises.length) {
+                resolve(results);
+              }
+            })
+            .catch((err) => {
+              results.push({ status: 'rejected', value: err });
+              if (results.length === promises.length) {
+                resolve(results);
+              }
+            });
+        } else {
+          results.push(promise);
+        }
+      });
+    });
+  }
+  //拿到第一个promise的结果
+  static race(promises) {
+    return new Mypormise((resolve, reject) => {
+      promises.forEach((promise) => {
+        if (promise instanceof Mypormise) {
+          promise.then(resolve, reject);
+        }
+      });
+    });
+  }
+  //
+  static any(promises) {
+    const errResult = [];
+    return new Mypormise((resolve, reject) => {
+      promises.forEach((promise) => {
+        if (promise instanceof Mypormise) {
+          promise.then(resolve, (err) => {
+            errResult.push(err);
+            if (errResult.length === promises.length) {
+              reject(new AggregateError(errResult));
+            }
+          });
+        }
+      });
+    });
+  }
 }
 
 const promise = new Mypormise((resolve, reject) => {
@@ -261,26 +314,54 @@ const promise = new Mypormise((resolve, reject) => {
 //   console.log(err);
 // });
 
-const p1 = new Mypormise((resolve) => {
+const p1 = new Mypormise((resolve, reject) => {
   setTimeout(() => {
     resolve(1111);
   }, 1000);
 });
 const p2 = new Mypormise((resolve, reject) => {
   setTimeout(() => {
-    resolve(2222);
+    reject(2222);
   }, 2000);
 });
-const p3 = new Mypormise((resolve) => {
+const p3 = new Mypormise((resolve, reject) => {
   setTimeout(() => {
     resolve(3333);
   }, 3000);
 });
 
-Mypormise.all([p1, p2, p3, 'aaa'])
+//all方法
+// Mypormise.all([p1, p2, p3, 'aaa'])
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+//allSettled方法
+// Mypormise.allSettled([p1, p2, p3, 'aaa'])
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+//race方法
+Mypormise.race([p1, p2, p3, 'aaa'])
   .then((res) => {
     console.log(res);
   })
   .catch((err) => {
     console.log(err);
   });
+
+//any方法
+// Mypormise.any([p1, p2, p3])
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
