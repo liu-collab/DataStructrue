@@ -1,3 +1,14 @@
+//util fun
+
+const excuteFunctionWithThrowError = function (excuFn, value, resolve, reject) {
+  try {
+    const res = excuFn(value);
+    resolve(res);
+  } catch (error) {
+    reject(error);
+  }
+};
+
 class Mypormise {
   constructor(excutor) {
     this.status = 'pendding';
@@ -31,55 +42,135 @@ class Mypormise {
         });
       }
     };
-    excutor(resolve, reject);
+
+    try {
+      excutor(resolve, reject);
+    } catch (error) {
+      reject(error);
+    }
   }
   then(onResolved, onRejected) {
-    //判断当前的状态为resolved直接执行
-    //在定时器中会直接改变状态,如果不直接执行,状态不是pendding
-    if (this.status == 'resolved') {
-      onResolved(this.resolved);
-    }
-    if (this.status == 'rejected') {
-      onRejected(this.rejected);
-    }
-    //将多个then执行放入到数组中,遍历执行数组中的函数
-    if (this.status == 'pendding') {
-      this.onResolvedFns.push(onResolved);
-      this.onRejectedFns.push(onRejected);
-    }
+    //链式调用,在then的返回值为下一个的promise的值
+    return new Mypormise((resolve, reject) => {
+      //判断当前的状态为resolved直接执行
+      //在定时器中会直接改变状态,如果不直接执行,状态不是pendding
+      if (this.status == 'resolved') {
+        //拿到返回值
+        // try {
+        //   //执行正常,调用下一个resolve,不正常调用下一个的reject
+        //   const val = onResolved(this.resolved);
+        //   resolve(val);
+        // } catch (error) {
+        //   reject(error);
+        // }
+        excuteFunctionWithThrowError(
+          onResolved,
+          this.resolved,
+          resolve,
+          reject
+        );
+      }
+      if (this.status == 'rejected') {
+        // try {
+        //   const val = onRejected(this.rejected);
+        //   resolve(val);
+        // } catch (error) {
+        //   reject(error);
+        // }
+        excuteFunctionWithThrowError(
+          onRejected,
+          this.rejected,
+          resolve,
+          reject
+        );
+      }
+      //将多个then执行放入到数组中,遍历执行数组中的函数
+      if (this.status == 'pendding') {
+        this.onResolvedFns.push(() => {
+          // try {
+          //   const val = onResolved(this.resolved);
+          //   resolve(val);
+          // } catch (error) {
+          //   reject(error);
+          // }
+          excuteFunctionWithThrowError(
+            onResolved,
+            this.resolved,
+            resolve,
+            reject
+          );
+        });
+        this.onRejectedFns.push(() => {
+          // try {
+          //   const val = onRejected(this.rejected);
+          //   resolve(val);
+          // } catch (error) {
+          //   reject(error);
+          // }
+          excuteFunctionWithThrowError(
+            onRejected,
+            this.rejected,
+            resolve,
+            reject
+          );
+        });
+      }
+    });
   }
 }
 
-const pormise = new Mypormise((resolve, reject) => {
+const promise = new Mypormise((resolve, reject) => {
   resolve(111);
-  //reject(222);
+  reject(222);
 });
+//多个then方法调用
+// promise.then(
+//   (res) => {
+//     console.log(res);
+//   },
+//   (err) => {
+//     console.log(err);
+//   }
+// );
 
-pormise.then(
-  (res) => {
-    console.log(res);
-  },
-  (err) => {
-    console.log(err);
-  }
-);
+// promise.then(
+//   (res) => {
+//     console.log(res);
+//   },
+//   (err) => {
+//     console.log(err);
+//   }
+// );
+//在定时器中调用
+// setTimeout(() => {
+//   promise.then(
+//     (res) => {
+//       console.log(res);
+//     },
+//     (err) => {
+//       console.log(err);
+//     }
+//   );
+// }, 1000);
 
-pormise.then(
-  (res) => {
-    console.log(res);
-  },
-  (err) => {
-    console.log(err);
-  }
-);
-
-setTimeout(() => {
-  pormise.then(
+//链式调用
+promise
+  .then(
     (res) => {
-      console.log(res);
+      console.log('res1: ' + res);
+      return 'aaa';
+      //throw new Error('aaa'); //只有抛出错误的时候执行下一个的promise的reject
     },
     (err) => {
-      console.log(err);
+      console.log('err1: ' + err);
+      // throw new Error('aaa');
+    }
+  )
+  .then(
+    (res) => {
+      console.log('res2: ' + res);
+    },
+    (err) => {
+      console.log('err2: ' + err);
     }
   );
-}, 1000);
