@@ -50,6 +50,12 @@ class Mypormise {
     }
   }
   then(onResolved, onRejected) {
+    //判断onRejected是否有值
+    const defaultonRejected = (err) => {
+      throw err;
+    };
+
+    onRejected = onRejected || defaultonRejected;
     //链式调用,在then的返回值为下一个的promise的值
     return new Mypormise((resolve, reject) => {
       //判断当前的状态为resolved直接执行
@@ -63,6 +69,7 @@ class Mypormise {
         // } catch (error) {
         //   reject(error);
         // }
+        //利用工具函数执行判断是否抛出异常
         excuteFunctionWithThrowError(
           onResolved,
           this.resolved,
@@ -86,41 +93,48 @@ class Mypormise {
       }
       //将多个then执行放入到数组中,遍历执行数组中的函数
       if (this.status == 'pendding') {
-        this.onResolvedFns.push(() => {
-          // try {
-          //   const val = onResolved(this.resolved);
-          //   resolve(val);
-          // } catch (error) {
-          //   reject(error);
-          // }
-          excuteFunctionWithThrowError(
-            onResolved,
-            this.resolved,
-            resolve,
-            reject
-          );
-        });
-        this.onRejectedFns.push(() => {
-          // try {
-          //   const val = onRejected(this.rejected);
-          //   resolve(val);
-          // } catch (error) {
-          //   reject(error);
-          // }
-          excuteFunctionWithThrowError(
-            onRejected,
-            this.rejected,
-            resolve,
-            reject
-          );
-        });
+        if (onResolved)
+          this.onResolvedFns.push(() => {
+            // try {
+            //   const val = onResolved(this.resolved);
+            //   resolve(val);
+            // } catch (error) {
+            //   reject(error);
+            // }
+            excuteFunctionWithThrowError(
+              onResolved,
+              this.resolved,
+              resolve,
+              reject
+            );
+          });
+
+        if (onRejected)
+          this.onRejectedFns.push(() => {
+            // try {
+            //   const val = onRejected(this.rejected);
+            //   resolve(val);
+            // } catch (error) {
+            //   reject(error);
+            // }
+            excuteFunctionWithThrowError(
+              onRejected,
+              this.rejected,
+              resolve,
+              reject
+            );
+          });
       }
     });
+  }
+  //catch方法,调用then方法,第一个参数传入undefined,只执行第二个函数
+  catch(onRejected) {
+    this.then(undefined, onRejected);
   }
 }
 
 const promise = new Mypormise((resolve, reject) => {
-  resolve(111);
+  //resolve(111);
   reject(222);
 });
 //多个then方法调用
@@ -154,23 +168,33 @@ const promise = new Mypormise((resolve, reject) => {
 // }, 1000);
 
 //链式调用
+// promise
+//   .then(
+//     (res) => {
+//       console.log('res1: ' + res);
+//       return 'aaa';
+//       //throw new Error('aaa'); //只有抛出错误的时候执行下一个的promise的reject
+//     },
+//     (err) => {
+//       console.log('err1: ' + err);
+//       // throw new Error('aaa');
+//     }
+//   )
+//   .then(
+//     (res) => {
+//       console.log('res2: ' + res);
+//     },
+//     (err) => {
+//       console.log('err2: ' + err);
+//     }
+//   );
+
+//catch方法
 promise
-  .then(
-    (res) => {
-      console.log('res1: ' + res);
-      return 'aaa';
-      //throw new Error('aaa'); //只有抛出错误的时候执行下一个的promise的reject
-    },
-    (err) => {
-      console.log('err1: ' + err);
-      // throw new Error('aaa');
-    }
-  )
-  .then(
-    (res) => {
-      console.log('res2: ' + res);
-    },
-    (err) => {
-      console.log('err2: ' + err);
-    }
-  );
+  .then((res) => {
+    console.log(res);
+    //throw new Error('asd');
+  })
+  .catch((err) => {
+    console.log(err);
+  });
