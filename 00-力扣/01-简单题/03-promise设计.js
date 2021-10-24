@@ -50,12 +50,17 @@ class Mypormise {
     }
   }
   then(onResolved, onRejected) {
-    //判断onRejected是否有值
+    //判断onRejected是否有值,在没有值的情况下表示使用的是catch方法
+    //直接将异常抛出,在下一个promise中用catch捕获异常
     const defaultonRejected = (err) => {
       throw err;
     };
-
     onRejected = onRejected || defaultonRejected;
+    //判断onResolved是否有值,没有值说明
+    const defaultonResolved = (val) => {
+      return val;
+    };
+    onResolved = onResolved || defaultonResolved;
     //链式调用,在then的返回值为下一个的promise的值
     return new Mypormise((resolve, reject) => {
       //判断当前的状态为resolved直接执行
@@ -128,14 +133,26 @@ class Mypormise {
     });
   }
   //catch方法,调用then方法,第一个参数传入undefined,只执行第二个函数
+  //返回一个promise,给finally方法使用
   catch(onRejected) {
-    this.then(undefined, onRejected);
+    return this.then(undefined, onRejected);
+  }
+  //finally方法
+  finally(onFinally) {
+    this.then(
+      () => {
+        onFinally();
+      },
+      () => {
+        onFinally();
+      }
+    );
   }
 }
 
 const promise = new Mypormise((resolve, reject) => {
-  //resolve(111);
-  reject(222);
+  resolve(111);
+  // reject(222);
 });
 //多个then方法调用
 // promise.then(
@@ -194,7 +211,11 @@ promise
   .then((res) => {
     console.log(res);
     //throw new Error('asd');
+    return 'aaa';
   })
   .catch((err) => {
     console.log(err);
+  })
+  .finally(() => {
+    console.log('finally');
   });
