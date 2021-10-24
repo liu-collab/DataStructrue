@@ -148,6 +148,39 @@ class Mypormise {
       }
     );
   }
+
+  static resolve(val) {
+    return new Mypormise((resolve) => {
+      resolve(val);
+    });
+  }
+  static reject(err) {
+    return new Mypormise((resolve, reject) => {
+      reject(err);
+    });
+  }
+  static all(promises) {
+    const values = [];
+    return new Mypormise((resolve, reject) => {
+      promises.forEach((promise) => {
+        //判断数组中的元素是否为自定义promise类,不是直接添加到结果的数组中
+        if (promise instanceof Mypormise) {
+          promise
+            .then((res) => {
+              values.push(res);
+              if (values.length === promises.length) {
+                resolve(values);
+              }
+            })
+            .catch((err) => {
+              reject(err);
+            });
+        } else {
+          values.push(promise);
+        }
+      });
+    });
+  }
 }
 
 const promise = new Mypormise((resolve, reject) => {
@@ -207,15 +240,47 @@ const promise = new Mypormise((resolve, reject) => {
 //   );
 
 //catch方法
-promise
+// promise
+//   .then((res) => {
+//     console.log(res);
+//     //throw new Error('asd');
+//     return 'aaa';
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   })
+//   .finally(() => {
+//     console.log('finally');
+//   });
+
+//resolve,reject
+// Mypormise.resolve('asd').then((res) => {
+//   console.log(res);
+// });
+// Mypormise.reject('err').catch((err) => {
+//   console.log(err);
+// });
+
+const p1 = new Mypormise((resolve) => {
+  setTimeout(() => {
+    resolve(1111);
+  }, 1000);
+});
+const p2 = new Mypormise((resolve, reject) => {
+  setTimeout(() => {
+    resolve(2222);
+  }, 2000);
+});
+const p3 = new Mypormise((resolve) => {
+  setTimeout(() => {
+    resolve(3333);
+  }, 3000);
+});
+
+Mypormise.all([p1, p2, p3, 'aaa'])
   .then((res) => {
     console.log(res);
-    //throw new Error('asd');
-    return 'aaa';
   })
   .catch((err) => {
     console.log(err);
-  })
-  .finally(() => {
-    console.log('finally');
   });
