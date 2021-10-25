@@ -317,27 +317,27 @@ const promise = new Mypormise((resolve, reject) => {
 const p1 = new Mypormise((resolve, reject) => {
   setTimeout(() => {
     resolve(1111);
-  }, 1000);
+  }, 3000);
 });
 const p2 = new Mypormise((resolve, reject) => {
   setTimeout(() => {
-    reject(2222);
+    resolve(2222);
   }, 2000);
 });
 const p3 = new Mypormise((resolve, reject) => {
   setTimeout(() => {
     resolve(3333);
-  }, 3000);
+  }, 1000);
 });
 
 //all方法
-// Mypormise.all([p1, p2, p3, 'aaa'])
-//   .then((res) => {
-//     console.log(res);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
+Mypormise.all([p1, p2, p3, 'aaa'])
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 //allSettled方法
 // Mypormise.allSettled([p1, p2, p3, 'aaa'])
@@ -349,13 +349,13 @@ const p3 = new Mypormise((resolve, reject) => {
 //   });
 
 //race方法
-Mypormise.race([p1, p2, p3, 'aaa'])
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// Mypormise.race([p1, p2, p3, 'aaa'])
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
 //any方法
 // Mypormise.any([p1, p2, p3])
