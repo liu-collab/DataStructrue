@@ -1,3 +1,4 @@
+//方法一
 function foo(arr1, arr2) {
   let arr = new Set();
   if (arr1.length < arr2.length) {
@@ -15,6 +16,12 @@ function foo(arr1, arr2) {
   }
   return Array.from(arr);
 }
+//方法二
+function bar(nums1, nums2) {
+  let set = [...new Set(nums1)];
+  return set.filter((item) => nums2.includes(item));
+}
 const nums1 = [1, 2, 2, 1];
 const nums2 = [2, 2];
 console.log(foo(nums1, nums2));
+console.log(bar(nums1, nums2));
