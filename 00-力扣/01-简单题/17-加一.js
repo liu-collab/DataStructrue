@@ -8,3 +8,8 @@ var plusOne = function (digits) {
 
   return Array.from(num);
 };
+var plusOne = function (digits) {
+  return String(BigInt(digits.join('')) + 1n)
+    .split('')
+    .map((item) => Number(item));
+};
