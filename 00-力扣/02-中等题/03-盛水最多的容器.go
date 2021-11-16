@@ -1,3 +1,4 @@
+package main
 func maxArea(height []int) int {
 	L :=0
 	R :=len(height)-1
@@ -22,4 +23,8 @@ func min(m int,n int) int {
  }else {
 		 return m
  }
+}
+func main()  {
+	var height = []int{1,1}
+	maxArea(height)
 }
