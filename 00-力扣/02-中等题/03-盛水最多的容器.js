@@ -6,11 +6,12 @@ var maxArea = function (height) {
     min = Math.min(height[left], height[right]);
     let area = min * (right - left);
     res = Math.max(area, res);
-    if (height[left] <= height[right]) {
-      ++left;
-    } else {
-      --right;
-    }
+    // if (height[left] <= height[right]) {
+    //   ++left;
+    // } else {
+    //   --right;
+    // }
+    height[left] <= height[right] ? ++left : right--;
   }
   return res;
 };
