@@ -5,7 +5,8 @@ function bar(arr) {
   arr += " ";
   arr = arr.split(",");
   for (let item of arr) {
-    res.push(parseInt(item));
+    // res.push(parseInt(item));
+    res.push(Number(item));
   }
   return res;
 }
